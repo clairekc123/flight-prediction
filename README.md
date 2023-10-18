@@ -51,7 +51,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#overview">Overview</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -150,10 +150,10 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [ ] Prediction
+- [ ] Interactions Plot
+- [ ] Map
+    - [ ] Display delay patterns by day-of-week (DOW)
 
 See the [open issues](https://github.com/clairekc123/flight-prediction/issues) for a full list of proposed features (and known issues).
 
