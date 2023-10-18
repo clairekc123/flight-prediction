@@ -19,7 +19,7 @@
 <h3 align="center">DCA Flight Delay Prediction</h3>
 
   <p align="center">
-    project_description
+    Built a user-friendly app to predict flight delay from Ronald Reagan National Airport (DCA) and spatially visualize delay patterns.
     <br />
     <a href="https://github.com/clairekc123/flight-prediction"><strong>Explore the docs »</strong></a>
     <br />
