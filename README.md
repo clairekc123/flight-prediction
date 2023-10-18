@@ -19,7 +19,7 @@
 <h3 align="center">DCA Flight Delay Prediction</h3>
 
   <p align="center">
-    Built a user-friendly app to predict flight delay from Ronald Reagan National Airport (DCA) and spatially visualize delay patterns.
+    A user-friendly app to predict flight delay from Ronald Reagan National Airport (DCA) and spatially visualize delay patterns.
     <br />
     <a href="https://github.com/clairekc123/flight-prediction"><strong>Explore the docs »</strong></a>
     <br />
@@ -67,7 +67,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-I built this app as a user-friendly means to predict the chance of flight delay for flights leaving Ronald Reagan National Airport (DCA). For the scope of this project, a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time. Using a binary indicator for delay as our outcome, my peers and I developed a logistic regression model using 2021 DCA flight data over the course of the fall 2022 semester for a class project. I have extended the application of this model to predict the chance of flight delay given different predictor values in this app, with an interactive map visualization to show different flight paths. 
+I built this app as a user-friendly means to predict the chance of flight delay for flights leaving Ronald Reagan National Airport (DCA). For the scope of this project, a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time. Using a binary indicator for delay as our outcome, my peers and I developed a logistic regression model using 2021 DCA flight data over the course of the fall 2022 semester for a class project. I have extended the application of this model to predict the chance of flight delay given different predictor values in this app, with an interactive map visualization to show different flight paths and delay patterns. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -80,18 +80,18 @@ Overall description of dataset:
 This dataset contains data from 34,074 flights that departed from Reagan National Airport (DCA). 
 
 Predictors: 
-* __*month* (factor)__: month of flight: our data looks at April-August 2021
-* __*day* (factor)__: weekday of flight, 1=Monday, 7=Sunday
-* __*carrier* (factor)__: airline, 13 unique values
+* __*month*__ (factor): month of flight: our data looks at April-August 2021
+* __*day*__ (factor): weekday of flight, 1=Monday, 7=Sunday
+* __*carrier*__ (factor): airline, 13 unique values
 * *origin* (factor): airport origin (DCA)
 * *orstate* (factor): state of flight origin (DC)
 * *deststate* (factor): state of flight destination, 40 unique values
-* __*depart* (numeric)__: time of scheduled flight departure in the form of number of minutes starting at 12:01 a.m. (For example: 300 = 5:00 a.m., since 300/60 = 5 hours starting at 12:01 a.m.)
-* __*delay* (factor)__: flight delayed, 1= delayed, 0=not delayed (a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time)
-* __*duration* (numeric)__: scheduled flight duration in minutes
+* __*depart*__ (numeric): time of scheduled flight departure in the form of number of minutes starting at 12:01 a.m. (For example: 300 = 5:00 a.m., since 300/60 = 5 hours starting at 12:01 a.m.)
+* __*delay*__ (factor): flight delayed, 1= delayed, 0=not delayed (a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time)
+* __*duration*__ (numeric): scheduled flight duration in minutes
 * *distance* (numeric): scheduled flight distance in miles
 
-**Bolded indicates variables present in prediction model** 
+**Bolded** indicates variables present in prediction model 
 
 2. Named `airports.csv`
 
