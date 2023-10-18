@@ -1,0 +1,389 @@
+---
+title: "pre-shiny code"
+author: "Claire Casey"
+date: "10/5/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+setwd("/Users/clairecasey/Downloads")
+
+library(dplyr)
+library(caret)
+library(countrycode)
+library(glmnet)
+```
+
+``` {r setup}
+
+flight.data.types <- c('factor',   # Month
+                        'factor',    # Day of Week 
+                        'factor',    # Carrier 
+                        'factor',    # origin airport
+                        'factor',    # origin state
+                        'factor',    # destination airport
+                        'factor',    # destination state
+                        'numeric',    # Departure Time
+                        'numeric', #  on time or not 
+                        'numeric',    # elapsed time (duration)
+                        'numeric'    # distance
+)
+
+missing.values <- c("NA","")
+
+
+
+# The following reads in the data.  
+##### NEED TO CHANGE SUBDIRECTORY FOR DATA LOCATION #####
+
+##### NEED TO CHANGE FILE NAME FOR YOUR DATA SET #####
+
+flight.data <- read.csv("/Users/clairecasey/Downloads/697VGroup1/WashDCflights2021 (1).csv",
+colClasses=flight.data.types,na.strings=missing.values)
+
+
+# copy the data set to a new name, so that the original data set
+# can be used again:
+
+
+flight.data.new <- flight.data
+head(flight.data)
+
+colnames(flight.data)
+
+nrow(flight.data)
+
+rowNum <- seq(1,34074,1)
+
+flights_row <- cbind(flight.data,rowNum)
+
+
+# FLIGHT DATA:
+
+# Change level names of carrier, day, month to full name for shiny app
+
+flight.data$month <- forcats::fct_recode(flight.data$month, April = "4", May = "5", June = "6", July = "7", August = "8")                                     
+
+flight.data$day <- fct_recode(flight.data$day, Monday = "1", Tuesday = "2", Wednesday = "3", Thursday = "4", Friday = "5", Saturday = "6", Sunday = "7") 
+
+flight.data$carrier <- fct_recode(flight.data$carrier, `Endeavor Air` = "9E", `American Airlines` = "AA", `Alaska Airlines` = "AS", `JetBlue Airways` = "B6", `Delta Airlines` = "DL", `Frontier Airlines` = "F9", `Envoy Air` = "MQ", `PSA Airlines` = "OH", `SkyWest Airlines` = "OO", `United Airlines` = "UA", `Southwest Airlines` = "WN", `Mesa Airlines` = "YV", `Republic Airlines` = "YX")
+
+# Function to create variable for time of flight (minutes after midnight -> hh:mm)
+
+gettime <- function(x){
+
+timeof <- c()  
+hours <- c()
+minutes <- c()
+
+for(i in 1:length(x)){
+hours[i] <- x[i] %/% 60
+min <- x[i] %% 60
+
+if(min < 10){
+  minutes[i] <- paste0("0", min)
+} else{
+  minutes[i] <- min
+}
+
+timeof[i] <- paste0(hours[i], ":", minutes[i])
+
+} 
+
+return(timeof)
+}
+
+#flight.data <- flight.data %>% mutate(timeof = gettime(depart))
+
+flight.data <- flight.data.new
+
+
+
+```
+
+
+
+```{r model used in shiny}
+
+set.seed(8674201)
+
+
+# randomly shuffle the data set for extracting
+# train and test data
+rand.shuffle <- sample(nrow(flight.data.new))
+flight.data.new2.new <- flight.data.new[rand.shuffle,]
+
+## create a new final data set
+flight.data.fin <- flight.data.new2.new
+
+percent <- 0.8
+
+## the "createDataPartition" function is from the "caret" package
+training.rows <- createDataPartition(flight.data.fin$delay,
+p = percent, list = FALSE)
+train.batch <- flight.data.fin[training.rows, ]
+test.batch <- flight.data.fin[-training.rows, ]
+
+write.csv(train.batch, "/Users/clairecasey/Downloads/697VGroup1/train.batch.csv", row.names=FALSE)
+
+
+
+flight.mod <- glm(formula = delay ~ day + depart + duration + month + carrier + I(depart^2) + I(duration^2) + I(duration^3) + day:depart + day:duration + day:month + depart:duration + depart:month + duration:month, data = flight.data, family = "binomial", subset = training.rows)
+
+## We will check the performance of our model, using the
+## "test.batch" data (the remaining 20% of the data)
+## ROC CURVE AND AUC HERE
+# use the logistic regression model from "flight.logistic.step2"
+# and apply it to the "test.batch" data
+# create probabilities for the "test.batch" data:
+test_prob2 <- predict(flight.mod, newdata = test.batch, type =
+"response")
+train_prob2 <- predict(flight.mod, newdata = train.batch, type
+= "response")
+# create ROC curve information and AUC
+test_roc2 <- roc(test.batch$delay ~ test_prob2, plot = FALSE, print.auc =
+TRUE)
+train_roc2 <- roc(train.batch$delay ~ train_prob2, plot = FALSE, print.auc
+= TRUE)
+as.numeric(test_roc2$auc)
+as.numeric(train_roc2$auc)
+# plot the ROC curve and show AUC on curve
+# NEED TO EDIT THE TITLE FOR WHICH MODEL
+plot(test_roc2,main="ROC Curve for \n Stepwise Logistic Regression
+2",print.auc=TRUE)
+
+
+saveRDS(flight.mod, "final_flight.mod.rds")
+
+pred_df = data.frame(
+                                    day = as.factor("Monday"),
+                                    month = as.factor("April"),
+                                    carrier = as.factor("American Airlines"),
+                                    depart = as.numeric(500),
+                                    duration = as.numeric(300),
+                                    stringsAsFactors = TRUE)
+                                  
+                                  
+                                  
+                                  
+                                  predc <- predict(flight.mod, newdata = pred_df, type="response")
+
+
+```
+
+
+
+```{r map, echo=FALSE}
+
+
+library(countrycode)
+library(rworldmap)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rgeos)
+library(cleangeo)
+library(ggrepel)
+library(lwgeom)
+library(plotly)
+library(rnaturalearth)
+library(vctrs)
+
+Sys.setenv('MAPBOX_TOKEN' = 'pk.eyJ1IjoiY2VjYXNleSIsImEiOiJjbGdneHRycHgwZzViM2ZwbmwwZzMyMjh3In0.mD2Y1j_HJ9B2-bAEBgrU0A')
+
+flight_map_df <- flight.data 
+
+# Airport locations:
+
+airports <- read.csv("/Users/clairecasey/Downloads/697VGroup1/airports.csv")
+
+flight_dest_airports <- airports %>% subset(IATA %in% flight_map_df$dest)
+
+#missing airports that are in DCA dataset and NOT in airports (coords) dataset: ECP, HHH
+
+missing_air <- flight_map_df %>% subset(!(dest %in% flight_dest_airports$IATA))
+
+# get unique flight counts for my DCA flights dataset
+
+flight_map_df <- flight_map_df %>% group_by(dest) %>% mutate(count = n())
+
+# counts for delayed/not delayed flights
+
+delay_flight_paths <- flight_map_df %>% group_by(dest) %>% mutate(delay_ct = sum(delay)) 
+
+delay_flight_paths <- delay_flight_paths %>% mutate(delay_pct = (delay_ct)/count)
+
+#DF containing unique flight paths, their counts, and % delay
+
+delay_flight_paths2 <- delay_flight_paths %>% group_by(origin, count, delay_pct) %>% distinct(dest)
+
+#change delay flights df column names to match airport DF
+
+colnames(delay_flight_paths2) <- c("origin", "count", "delay_pct", "IATA")
+
+
+#left join to get lat/lon coordinates of each destination airport (end lon/lat)
+
+delay_flight_paths_map <- left_join(delay_flight_paths2, flight_dest_airports, by = "IATA")
+
+colnames(delay_flight_paths_map) <- c("origin", "count", "delay_pct", "IATA", "dest_AIRPORT", "dest_CITY", "dest_STATE", "dest_COUNTRY", "end_lat", "end_lon")
+
+#mutate column with DCA airport lon/lat (38.85208,-77.03772) (start lon/lat)
+
+DCA_lat <- 38.85208
+  
+DCA_lon <- -77.03772
+
+delay_flight_paths_map <- delay_flight_paths_map %>% mutate(start_lat = DCA_lat, start_lon = DCA_lon)
+
+#airport DF created by using distinct lat/lon of each airport in my DCA flights dataset
+
+flight_airports <- airports %>% subset(IATA %in% flight_map_df$dest|IATA %in% flight_map_df$origin)
+
+#color map by delay percentage:
+
+delay_factored <- function(delay_pct){
+  
+ delay_degree <- c()
+  
+  for(i in 1:length(delay_pct)) {
+  
+     if(delay_pct[i] <= 0.05) {
+     
+      delay_degree[i] <- "<= 5% Delay Rate" 
+    } 
+  else if(delay_pct[i] > 0.05 & delay_pct[i] <= 0.1){
+    
+    delay_degree[i] <- "<= 10% Delay Rate"
+  }
+      else if(delay_pct[i] > 0.1 & delay_pct[i] <= 0.15){
+    
+        delay_degree[i] <- "<= 15% Delay Rate"
+      }
+      else if(delay_pct[i] > 0.15 & delay_pct[i] <= 0.2){
+    
+        delay_degree[i] <- "<= 20% Delay Rate"
+      }
+          else if(delay_pct[i] > 0.2 & delay_pct[i] <= 0.25){
+    
+            delay_degree[i] <- "<= 25% Delay Rate"
+          }
+          else if(delay_pct[i] > 0.25 & delay_pct[i] <= 0.3){
+    
+            delay_degree[i] <- "<= 30% Delay Rate"
+          }
+          else if(delay_pct[i] > 0.3 & delay_pct[i] <= 0.35){
+   
+             delay_degree[i] <- "<= 35% Delay Rate"
+          }
+              else if(delay_pct[i] > 0.35 & delay_pct[i] <= 0.4){
+   
+                 delay_degree[i] <- "<= 40% Delay Rate"
+              }
+              else if(delay_pct[i] > 0.4 & delay_pct[i] <= 0.45){
+    
+                delay_degree[i] <- "<= 45% Delay Rate"
+              }
+              else if(delay_pct[i] > 0.45 & delay_pct[i] <= 0.50){
+   
+                 delay_degree[i] <- "<= 50% Delay Rate"
+              } else{
+    
+                delay_degree[i] <- "> 50% Delay Rate"
+              }
+}
+  return(delay_degree)
+}
+
+how_much_delay <- delay_factored(delay_flight_paths_map$delay_pct)
+
+delay_flight_paths_map <- cbind(delay_flight_paths_map, how_much_delay)
+
+colnames(delay_flight_paths_map)[13] <- "how_much_delay"
+
+#Add count variable to flight_airports dataset for size reference 
+
+#new_row = c(origin = "DCA", count = as.integer(10), delay_pct = NA, IATA = "DCA")
+#flight_airports_map = rbind(delay_flight_paths2, new_row)
+
+delay_flight_paths2 <- delay_flight_paths2 %>% ungroup() %>% 
+   add_row(origin = "DCA", count = 10, delay_pct = NA, IATA = "DCA")
+
+#join 2 dfs to obtain count variable
+
+flight_airports_map <- left_join(flight_airports, delay_flight_paths2, by = "IATA")
+
+
+# Map projection:
+geo <- list(
+  projection = list(
+    type = 'orthographic', 
+    rotation = list(lon = -100, lat = 40, roll = 0)
+  ),
+    center = list(lon=-100, lat=40),
+  lonaxis = list(range = c(-130, -50)),
+  lataxis = list(range = c(20,60)),
+  showland = TRUE,
+  landcolor = toRGB("#e5ecf6")
+)
+
+plot_geo(color = I("blue")) %>%
+  add_segments(
+    data = delay_flight_paths_map,
+    x = ~start_lon,
+    xend = ~end_lon,
+    y = ~start_lat,
+    yend = ~end_lat,
+    alpha = 0.3,
+    size = I(1),
+    color = ~how_much_delay,
+    colors =  brewer.pal(11, "Spectral"),
+    hoverinfo = "none"
+  ) %>%
+  add_markers(
+    data = flight_airports_map,
+    x = ~LONGITUDE,
+    y = ~LATITUDE,
+    text = ~paste0("Delay Percentage from DCA to ", AIRPORT, ": ", 100*round(delay_pct,2), "%"),
+    size = ~count,
+    hoverinfo = "text",
+    alpha = 0.5,
+    showlegend = F
+  ) %>%
+  layout(geo = geo, showlegend = TRUE)
+
+
+```
+
+
+
+```{r model used}
+
+
+
+
+finalmodel <- glm(is_canceled ~ continentName + lead_time*customer_type + hotel*children + adults + is_repeated_guest + lead_time:is_repeated_guest + previous_cancellations + adr + QSeas*meal + QSeas:adults + QSeas:children + previous_bookings_not_canceled + deposit_type + stays_in_weekend_nights*stays_in_week_nights, family=binomial("logit"), data=trainBatch)
+
+summary(finalmodel)
+
+
+
+
+
+#save model as RDS
+saveRDS(finalmodel,file = "/Users/clairecasey/Downloads/finalmodel1.rds")
+
+#load into global environment
+
+#1
+countrynames <- as.vector(unique(trainBatch$countryName))
+countrynames <- sort(countrynames)
+
+#2
+mod=readRDS("/Users/clairecasey/Downloads/finalmodel1.rds")
+
+
+
+```
+
+
