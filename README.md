@@ -32,7 +32,7 @@
       </ul>
     </li>
     <li><a href="#overview">Overview</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#app-features">App Features</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -47,9 +47,8 @@
 
 I built this app as a user-friendly means to predict the chance of flight delay for flights leaving Ronald Reagan National Airport (DCA). For the scope of this project, a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time. Using a binary indicator for delay as our outcome, my peers and I developed a logistic regression model using 2021 DCA flight data over the course of the fall 2022 semester for a class project. I have extended the application of this model to predict the chance of flight delay given different predictor values in this app, with an interactive map visualization to show different flight paths and delay patterns. 
 
-To run the app, named `flightdelay_pred shiny.R`, use this line of code in R:
+To run the app, named `flightdelay_pred shiny.R`, click [this link](https://cecasey.shinyapps.io/DCA_flight_delay_prediction/).
 
-`runGitHub( "flight-prediction", "clairekc123")`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -148,8 +147,8 @@ Pressing the "Update Delay Distribution for Selected D.O.W." button will update 
 
 
 
-<!-- ROADMAP -->
-## Roadmap
+<!-- APP FEATURES -->
+## App Features
 
 - [ ] Prediction
 - [ ] Interactions Plot
@@ -163,7 +162,9 @@ Pressing the "Update Delay Distribution for Selected D.O.W." button will update 
 <!-- CONTACT -->
 ## Contact
 
-Claire Casey -  clairekc123@gmail.com
+Claire Casey 
+-  Email: clairekc123@gmail.com
+-  [LinkedIn](https://www.linkedin.com/in/claire-casey-3953221a1/)
 
 Project Link: [https://github.com/clairekc123/flight-prediction](https://github.com/clairekc123/flight-prediction)
 
@@ -177,7 +178,7 @@ Project Link: [https://github.com/clairekc123/flight-prediction](https://github.
 * Vishwajith Anagandula, Vishvesh Gandhi, and Sijing Yu for your work analyzing the DCA flight data and building this prediction model
 * Professor Erin Conlon for your feedback and aid with our flight data analysis and model-building
 * Professor Shai Gorsky for your lessons and feedback on creating an R shiny app
-* [Othneil Drew](https://github.com/othneildrew)for this great README.md template: https://github.com/othneildrew/Best-README-Template
+* [Othneil Drew](https://github.com/othneildrew) for this great README.md template: https://github.com/othneildrew/Best-README-Template
 * [Airport Kaggle Data](https://www.kaggle.com/datasets/aravindram11/list-of-us-airports)
 * DCA Flight dataset compiled by Professor Erin Conlon from the [United States Bureau of Transportation Statistics](https://www.transtats.bts.gov/HomeDrillChart_Month.asp?5ry_lrn4=FDFE&N44_Qry=E&5ry_Pn44vr4=DDD&5ry_Nv42146=QPN&heY_fryrp6lrn4=FDFG&heY_fryrp6Z106u=K) page
 
