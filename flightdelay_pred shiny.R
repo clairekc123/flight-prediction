@@ -18,8 +18,8 @@ oldw <- getOption("warn")
 options(warn = -1)
 
 #Model
-trainBatch <- read.csv("/Users/clairecasey/Downloads/697VGroup1/train.batch.csv")
-mod=readRDS("/Users/clairecasey/Downloads/697VGroup1/final_flight.mod.rds")
+trainBatch <- read.csv("train.batch.csv")
+mod=readRDS("final_flight.mod.rds")
 
 
 
@@ -38,18 +38,8 @@ flight.data.types <- c('factor',   # Month
 
 missing.values <- c("NA","")
 
-flight.data <- read.csv("/Users/clairecasey/Downloads/697VGroup1/WashDCflights2021 (1).csv",
+flight.data <- read.csv("flight.data",
                         colClasses=flight.data.types,na.strings=missing.values)
-
-# FLIGHT DATA:
-
-# Change level names of carrier, day, month to full name for shiny app
-
-flight.data$month <- forcats::fct_recode(flight.data$month, April = "4", May = "5", June = "6", July = "7", August = "8")                                     
-
-flight.data$day <- fct_recode(flight.data$day, Monday = "1", Tuesday = "2", Wednesday = "3", Thursday = "4", Friday = "5", Saturday = "6", Sunday = "7") 
-
-flight.data$carrier <- fct_recode(flight.data$carrier, `Endeavor Air` = "9E", `American Airlines` = "AA", `Alaska Airlines` = "AS", `JetBlue Airways` = "B6", `Delta Airlines` = "DL", `Frontier Airlines` = "F9", `Envoy Air` = "MQ", `PSA Airlines` = "OH", `SkyWest Airlines` = "OO", `United Airlines` = "UA", `Southwest Airlines` = "WN", `Mesa Airlines` = "YV", `Republic Airlines` = "YX")
 
 #Map
 
@@ -57,7 +47,7 @@ flight_map_df <- flight.data
 
 flight_map_df <- flight_map_df %>% group_by(dest) %>% mutate(count = n())
 
-airports <- read.csv("/Users/clairecasey/Downloads/697VGroup1/airports.csv")
+airports <- read.csv("airports.csv")
 
 flight_dest_airports <- airports %>% subset(IATA %in% flight_map_df$dest)
 
@@ -157,9 +147,6 @@ colnames(delay_flight_paths_map)[13] <- "how_much_delay"
 
 #Add count variable to flight_airports dataset for size reference 
 
-#new_row = c(origin = "DCA", count = as.integer(10), delay_pct = NA, IATA = "DCA")
-#flight_airports_map = rbind(delay_flight_paths2, new_row)
-
 delay_flight_paths2 <- delay_flight_paths2 %>% ungroup() %>% 
   add_row(origin = "DCA", count = 10, delay_pct = NA, IATA = "DCA")
 
@@ -204,7 +191,7 @@ ui <- fluidPage(
       
     
       checkboxGroupInput(inputId = "interactions_plot",
-                         label = "Choose a Variable(s) to Visualize their (Joint) Effect:",
+                         label = "Choose up to 3 Variables to Visualize their (Joint) Effect:",
                          choices = c("day", "month", "carrier", "depart", "duration"),
                          selected="day"
       )
@@ -236,11 +223,13 @@ server <- function(input, output, session) {
   interactionseffectsplot <- eventReactive(input$intplot, 
                                            {depart <- hour(input$timeof)*60 + minute(input$timeof)    # convert hh:mm time back to minutes
                                              
-                                             ggpredict(mod, terms = input$interactions_plot, condition = c(day = (input$day),
-                                                                                                             month = (input$month),
-                                                                                                             carrier = (input$carrier),
-                                                                                                             duration = as.numeric(input$adults),
-                                                                                                             depart = as.numeric(depart))) 
+                                             ggpredict(mod, terms = input$interactions_plot, condition = c(day = input$day,
+                                                                                                             month = input$month,
+                                                                                                             carrier = input$carrier,
+                                                                                                             depart = as.numeric(depart),
+                                                                                                             duration = as.numeric(input$duration)))
+                                                                                                             
+                                             
                                                        })
  
   
@@ -296,8 +285,6 @@ server <- function(input, output, session) {
    )
    
    output$map <- renderPlotly({
-     
-     
      
      # get unique flight counts for my DCA flights dataset given the selected day
      
@@ -412,7 +399,7 @@ server <- function(input, output, session) {
      
      my_day <- input$day
      
-     plot_geo(color = I("blue")) %>%
+     plot_geo(color = I("orange")) %>%
      add_segments(
        data = delay_flight_paths_map2,
        x = ~start_lon,
@@ -435,7 +422,19 @@ server <- function(input, output, session) {
        alpha = 0.5,
        showlegend = F
      ) %>%
-     layout(geo = geo, showlegend = TRUE)
+       add_markers(
+         data = flight_airports_map,
+         x = -77.03772,
+         y = 38.85208,
+         text = ~paste0("Ronald Reagan National Airport (DCA)"),
+         size = ~count,
+         hoverinfo = "text",
+         alpha = 0.5,
+         color = ~origin,
+         colors = I("red"),
+         showlegend = F
+       ) %>%
+       layout(geo = geo, showlegend = TRUE)
    })
   
    })
@@ -591,7 +590,19 @@ observeEvent(input$revert, {
       alpha = 0.5,
       showlegend = F
     ) %>%
-    layout(geo = geo, showlegend = TRUE)
+      add_markers(
+        data = flight_airports_map,
+        x = -77.03772,
+        y = 38.85208,
+        text = ~paste0("Ronald Reagan National Airport (DCA)"),
+        size = ~count,
+        hoverinfo = "text",
+        alpha = 0.5,
+        color = ~origin,
+        colors = I("red"),
+        showlegend = F
+      ) %>%
+      layout(geo = geo, showlegend = TRUE)
   })
   
   
@@ -639,7 +650,19 @@ observeEvent(input$revert, {
          alpha = 0.5,
          showlegend = F
        ) %>%
-       layout(geo = geo, showlegend = TRUE)
+         add_markers(
+           data = flight_airports_map,
+           x = -77.03772,
+           y = 38.85208,
+           text = ~paste0("Ronald Reagan National Airport (DCA)"),
+           size = ~count,
+           hoverinfo = "text",
+           alpha = 0.5,
+           color = ~origin,
+           colors = I("red"),
+           showlegend = F
+         ) %>%
+         layout(geo = geo, showlegend = TRUE)
 
      
   })
@@ -650,6 +673,9 @@ observeEvent(input$revert, {
   
 }
 options(warn = oldw)
+
+shinyApp(ui = ui, server = server)
+
 
 shinyApp(ui = ui, server = server)
 
