@@ -150,15 +150,15 @@ Pressing the "Predict!" button will display the predicted chance (as a percentag
 
 ![Prediction](DCAflight_shiny2.jpg)
 
-Pressing the "" button will display the interactions plot given the variables selected in the checkbox.
+Pressing the "Visualize Joint Effects" button will display the interactions plot given the variables selected in the checkbox.
 
 ![Interactions Plot](DCAflight_shiny3.jpg)
 
-A map displaying the flight paths from DCA to airports around the country is also shown upon opening the app. Paths are colored based on their delay percentages, which are defined by the legend. The sizes of the markers on the map are proportional to the number of flights to that airport in the DCA dataset. Pressing the "Revert" button will display this map as well.
+A map displaying the flight paths from DCA to airports around the country is also shown upon opening the app. Paths are colored based on their delay percentages, which are defined by the legend. The sizes of the markers on the map are proportional to the number of flights to that airport in the DCA dataset. Pressing the "Revert to Original" button will display this map as well.
 
 ![Flight Path Map](DCAflight_shiny4.jpg)
 
-Pressing the "" button will update the map to recalculate the flight counts and delay percentages given data subsetted by the day-of-week input. 
+Pressing the "Update Delay Distribution for Selected D.O.W." button will update the map to recalculate the flight counts and delay percentages given data subsetted by the day-of-week input. 
 
 ![Update Flight Path Map](DCAflight_shiny5.jpg)
 
