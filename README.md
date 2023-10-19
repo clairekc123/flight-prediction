@@ -94,6 +94,8 @@ Predictors:
 
 **Bolded** indicates variables present in prediction model 
 
+Data was refactored and classed in `flight_pred pre-shiny code.Rmd`, then saved to `flight.data` for use in the shiny app. 
+
 2. Named `airports.csv`
 
 Overall description of dataset:
@@ -141,17 +143,25 @@ Predictors:
 Users can input values (within the scope of the DCA 2021 flight dataset) for month, day of the week, airline carrier, departure time, and duration of their flight. Users also have a checkbox option for an interactions plot visualization, obtained using the function `ggeffects::ggpredict()`, which uses the inputted user values to visualize the effect on delay given the (up to 3)  variables selected. 
 
 
+![Opening the App]('DCAflight_shiny1.jpg')
+
+
 Pressing the "Predict!" button will display the predicted chance (as a percentage) of flight delay from DCA given user inputs. 
+
+![Prediction]('DCAflight_shiny2.jpg')
 
 Pressing the "" button will display the interactions plot given the variables selected in the checkbox.
 
-A map displaying the flight paths from DCA to airports around the country is also shown upon opening the app. Paths are colored based on their delay percentages, which are defined by the legend. The sizes of the markers on the map are proportional to the number of flights to that airport in the DCA dataset. 
+![Interactions Plot]('DCAflight_shiny3.jpg')
+
+A map displaying the flight paths from DCA to airports around the country is also shown upon opening the app. Paths are colored based on their delay percentages, which are defined by the legend. The sizes of the markers on the map are proportional to the number of flights to that airport in the DCA dataset. Pressing the "Revert" button will display this map as well.
+
+![Flight Path Map]('DCAflight_shiny4.jpg')
 
 Pressing the "" button will update the map to recalculate the flight counts and delay percentages given data subsetted by the day-of-week input. 
 
+![Update Flight Path Map]('DCAflight_shiny5.jpg')
 
-
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
