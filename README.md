@@ -41,13 +41,14 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#data">Data</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
+       
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -202,6 +203,8 @@ Project Link: [https://github.com/clairekc123/flight-prediction](https://github.
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
+* Vishwajith Anagandula, Vishvesh Gandhi, and Sijing Yu for your work analyzing the DCA flight data and building this prediction model
+* Professor Erin Conlon for your feedback and aid with our flight data analysis and model-building
 * []()
 * []()
 * []()
@@ -212,18 +215,6 @@ Project Link: [https://github.com/clairekc123/flight-prediction](https://github.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/clairekc123/flight-prediction.svg?style=for-the-badge
-[contributors-url]: https://github.com/clairekc123/flight-prediction/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/clairekc123/flight-prediction.svg?style=for-the-badge
-[forks-url]: https://github.com/clairekc123/flight-prediction/network/members
-[stars-shield]: https://img.shields.io/github/stars/clairekc123/flight-prediction.svg?style=for-the-badge
-[stars-url]: https://github.com/clairekc123/flight-prediction/stargazers
-[issues-shield]: https://img.shields.io/github/issues/clairekc123/flight-prediction.svg?style=for-the-badge
-[issues-url]: https://github.com/clairekc123/flight-prediction/issues
-[license-shield]: https://img.shields.io/github/license/clairekc123/flight-prediction.svg?style=for-the-badge
-[license-url]: https://github.com/clairekc123/flight-prediction/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
