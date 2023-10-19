@@ -13,7 +13,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/clairekc123/flight-prediction">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="flight_map.jpg" alt="Logo" width="150" height="80">
   </a>
 
 <h3 align="center">DCA Flight Delay Prediction</h3>
@@ -66,7 +66,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][flight_map]](/home/clairekc123/flight-prediction/flight_map/flight_map.jpg "flight_map")
+[![Product Name Screen Shot][flight_map]](flight_map.jpg "flight_map")
 
 I built this app as a user-friendly means to predict the chance of flight delay for flights leaving Ronald Reagan National Airport (DCA). For the scope of this project, a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time. Using a binary indicator for delay as our outcome, my peers and I developed a logistic regression model using 2021 DCA flight data over the course of the fall 2022 semester for a class project. I have extended the application of this model to predict the chance of flight delay given different predictor values in this app, with an interactive map visualization to show different flight paths and delay patterns. 
 
@@ -88,7 +88,7 @@ Predictors:
 * *orstate* (factor): state of flight origin (DC)
 * *deststate* (factor): state of flight destination, 40 unique values
 * __*depart*__ (numeric): time of scheduled flight departure in the form of number of minutes starting at 12:01 a.m. (For example: 300 = 5:00 a.m., since 300/60 = 5 hours starting at 12:01 a.m.)
-* __*delay*__ (factor): flight delayed, 1= delayed, 0=not delayed (a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time)
+* __*delay*__ (numeric): flight delayed, 1= delayed, 0=not delayed (a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time)
 * __*duration*__ (numeric): scheduled flight duration in minutes
 * *distance* (numeric): scheduled flight distance in miles
 
@@ -114,22 +114,22 @@ Predictors:
 ### Built With
 
 * RStudio
-  * R libraries utilized:
+  * R libraries utilized for data cleaning and modeling:
     * dplyr
     * forcats
     * caret
     * glmnet
     * pROC
+    * lubridate
+  * R libraries utilized for visualization:
+    * shiny
+    * shinyTime
+    * shinyWidgets
     * plotly
     * ggplot2
     * RColorBrewer
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+    * ggeffects
+    * effects
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -138,9 +138,18 @@ Predictors:
 <!-- USAGE EXAMPLES -->
 ## Overview
 
- 
+Users can input values (within the scope of the DCA 2021 flight dataset) for month, day of the week, airline carrier, departure time, and duration of their flight. Users also have a checkbox option for an interactions plot visualization, obtained using the function `ggeffects::ggpredict()`, which uses the inputted user values to visualize the effect on delay given the (up to 3)  variables selected. 
 
-This shiny app is an extension of my master's project and graduate work in my data visualization class. 
+
+Pressing the "Predict!" button will display the predicted chance (as a percentage) of flight delay from DCA given user inputs. 
+
+Pressing the "" button will display the interactions plot given the variables selected in the checkbox.
+
+A map displaying the flight paths from DCA to airports around the country is also shown upon opening the app. Paths are colored based on their delay percentages, which are defined by the legend. The sizes of the markers on the map are proportional to the number of flights to that airport in the DCA dataset. 
+
+Pressing the "" button will update the map to recalculate the flight counts and delay percentages given data subsetted by the day-of-week input. 
+
+
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
@@ -205,9 +214,11 @@ Project Link: [https://github.com/clairekc123/flight-prediction](https://github.
 
 * Vishwajith Anagandula, Vishvesh Gandhi, and Sijing Yu for your work analyzing the DCA flight data and building this prediction model
 * Professor Erin Conlon for your feedback and aid with our flight data analysis and model-building
-* []()
-* []()
-* []()
+* Professor Shai Gorsky for your lessons and feedback on creating an R shiny app
+* [Othneil Drew](https://github.com/othneildrew)for this great README.md template: https://github.com/othneildrew/Best-README-Template
+* [Airport Kaggle Data](https://www.kaggle.com/datasets/aravindram11/list-of-us-airports)
+* DCA Flight dataset compiled by Professor Erin Conlon from the [United States Bureau of Transportation Statistics](https://www.transtats.bts.gov/HomeDrillChart_Month.asp?5ry_lrn4=FDFE&N44_Qry=E&5ry_Pn44vr4=DDD&5ry_Nv42146=QPN&heY_fryrp6lrn4=FDFG&heY_fryrp6Z106u=K) page
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -215,20 +226,7 @@ Project Link: [https://github.com/clairekc123/flight-prediction](https://github.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[flight_map]: /home/clairekc123/flight-prediction/flight_map/flight_map.jpg
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
+[flight_map]: flight_map.jpg
 [Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
 [Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+ 
