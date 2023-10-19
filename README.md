@@ -1,14 +1,5 @@
 # flight-prediction
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -24,11 +15,6 @@
     <a href="https://github.com/clairekc123/flight-prediction"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/clairekc123/flight-prediction">View Demo</a>
-    ·
-    <a href="https://github.com/clairekc123/flight-prediction/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/clairekc123/flight-prediction/issues">Request Feature</a>
   </p>
 </div>
 
@@ -45,17 +31,8 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-       
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
     <li><a href="#overview">Overview</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -69,6 +46,10 @@
 [![Product Name Screen Shot][flight_map]](flight_map.jpg "flight_map")
 
 I built this app as a user-friendly means to predict the chance of flight delay for flights leaving Ronald Reagan National Airport (DCA). For the scope of this project, a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time. Using a binary indicator for delay as our outcome, my peers and I developed a logistic regression model using 2021 DCA flight data over the course of the fall 2022 semester for a class project. I have extended the application of this model to predict the chance of flight delay given different predictor values in this app, with an interactive map visualization to show different flight paths and delay patterns. 
+
+To run the app, named `flightdelay_pred shiny.R`, use this line of code in R:
+
+`runGitHub( "flight-prediction", "clairekc123")`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -111,7 +92,7 @@ Predictors:
 * *LATITUDE* (numeric): approximate latitude coordinate of airport's location
 * *LONGITUDE* (numeric): approximate longitude coordinate of airport's location
   
-
+Code detailing data cleaning and merging with DCA data can be found in `flight_pred pre-shiny code.Rmd`, as well as in the shiny app.
 
 ### Built With
 
@@ -137,7 +118,7 @@ Predictors:
 
 
 
-<!-- USAGE EXAMPLES -->
+<!-- OVERVIEW -->
 ## Overview
 
 Users can input values (within the scope of the DCA 2021 flight dataset) for month, day of the week, airline carrier, departure time, and duration of their flight. Users also have a checkbox option for an interactions plot visualization, obtained using the function `ggeffects::ggpredict()`, which uses the inputted user values to visualize the effect on delay given the (up to 3)  variables selected. 
@@ -174,35 +155,6 @@ Pressing the "Update Delay Distribution for Selected D.O.W." button will update 
 - [ ] Interactions Plot
 - [ ] Map
     - [ ] Display delay patterns by day-of-week (DOW)
-
-See the [open issues](https://github.com/clairekc123/flight-prediction/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
