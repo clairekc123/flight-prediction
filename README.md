@@ -130,7 +130,7 @@ Pressing the "Predict!" button will display the predicted chance (as a percentag
 
 ![Prediction](DCAflight_shiny2.jpg)
 
-Pressing the "Visualize Joint Effects" button will display the interactions plot given the variables selected in the checkbox.
+Pressing the "Visualize (Joint) Effects" button will display the interactions plot given the variables selected in the checkbox.
 
 ![Interactions Plot](DCAflight_shiny3.jpg)
 
