@@ -47,7 +47,7 @@
 
 I built this app as a user-friendly means to predict the chance of flight delay for flights leaving Ronald Reagan National Airport (DCA). For the scope of this project, a delayed flight is defined as a flight that arrived more than 15 minutes after the scheduled arrival time. Using a binary indicator for delay as our outcome, my peers and I developed a logistic regression model using 2021 DCA flight data over the course of the fall 2022 semester for a class project. I have extended the application of this model to predict the chance of flight delay given different predictor values in this app, with an interactive map visualization to show different flight paths and delay patterns. 
 
-**Disclaimer**: Flight data collected in 2021 reflects unusual flight trends due to the COVID-19 pandemic. Specifically, there were an unusually low number of flights in the month of April due to less travel, thus delay predictions are skewed. 
+**Disclaimer**: Flight data collected in 2021 reflects unusual flight trends due to the COVID-19 pandemic. Specifically, there were an unusually low number of flights due to less travel, thus delay predictions are skewed. 
 
 To run the app, named `flightdelay_pred shiny.R`, click [this link](https://cecasey.shinyapps.io/DCA_flight_delay_prediction/).
 
